@@ -33,8 +33,7 @@
   object-fit: cover;
 }
 
-.sidebar a{
-  display: block;
+.sidebar a{  
   color: rgba(255,255,255, 0.7);
   padding: 16px;
   text-decoration: none;
@@ -81,8 +80,7 @@
   }
 }
 
-
-@media screen and (max-width: 400px){
+@media screen and (max-width: 501px){
   .sidebar a {
     text-align: center;
     float: none;
