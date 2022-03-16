@@ -19,6 +19,24 @@ export default function Profile(){
   const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
   const [imageAvatar, setImageAvatar] = useState(null);
 
+  function handleFile(e){
+    if(e.target.files[0]) {
+      const image = e.target.files[0];      
+      if(image.type === 'image/jpeg' || image.type === 'image/png') {
+        setImageAvatar(image);
+        setAvatarUrl(URL.createObjectURL(e.target.files[0]));        
+      } else {
+        alert('Envie uma imagem do tipo PNG ou JPEG');
+        setImageAvatar(null);
+        return null;
+      }
+    }
+  }
+  
+  async function handleUpload() {
+
+  }
+
   async function handleSave(e) {
     e.preventDefault();
 
@@ -36,7 +54,10 @@ export default function Profile(){
         setUser(data);
         storageUser(data);
       })
-    }   
+    }
+    else if(nome !== '' && imageAvatar !== null){
+      handleUpload();
+    }
   }
 
   return(
@@ -55,7 +76,7 @@ export default function Profile(){
                 <FiUpload color="#FFF" size={25} />
               </span>
 
-              <input type="file" accept="image/*" /><br/>
+              <input type="file" accept="image/*" onChange={handleFile} /><br/>
               { avatarUrl === null ? 
                 <img src={avatar} width="250" height="250" alt="Foto de perfil do usuario" />
                 :
