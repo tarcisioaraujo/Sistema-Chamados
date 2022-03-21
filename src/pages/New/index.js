@@ -2,6 +2,7 @@
 import { useState, useEffect, useContext } from 'react';
 
 import firebase from '../../services/firebaseConnection';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Header from '../../components/Header';
 import Title from '../../components/Title';
@@ -12,6 +13,8 @@ import './new.css';
 import { FiPlusCircle } from 'react-icons/fi'
 
 export default function New() {
+  const { id } = useParams();
+  const history = useHistory();
 
   const [loadCustomers, setLoadCustomers] = useState(true);
   const [customers, setCustomers] = useState([]);
