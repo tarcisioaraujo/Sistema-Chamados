@@ -24,6 +24,8 @@ export default function New() {
   const [status, setStatus] = useState('Aberto');
   const [complemento, setComplemento] = useState('');
 
+  const [idCustomer, setIdCustomer] = useState(false);
+
   const { user } = useContext(AuthContext);
 
   useEffect(()=> {
@@ -50,6 +52,10 @@ export default function New() {
         setCustomers(lista);
         setLoadCustomers(false);
 
+        if(id){
+          loadId(lista);
+        }
+
       })
       .catch((error)=>{
         console.log('ERRO!', error);
@@ -61,6 +67,25 @@ export default function New() {
     loadCustomers();
 
   }, []);
+
+  async function loadId(lista){
+    await firebase.firestore().collection('chamados').doc(id)
+    .get()
+    .then((snapshot) => {
+      setAssunto(snapshot.data().assunto);
+      setStatus(snapshot.data().status);
+      setComplemento(snapshot.data().complemento)
+
+      let index = lista.findIndex(item => item.id === snapshot.data().clienteId );
+      setCustomerSelected(index);
+      setIdCustomer(true);
+
+    })
+    .catch((err)=>{
+      console.log('ERRO NO ID PASSADO: ', err);
+      setIdCustomer(false);
+    })
+  }
 
   async function handleRegister(e){
     e.preventDefault();
