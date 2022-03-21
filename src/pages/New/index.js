@@ -66,7 +66,7 @@ export default function New() {
 
     loadCustomers();
 
-  }, []);
+  }, [id]);
 
   async function loadId(lista){
     await firebase.firestore().collection('chamados').doc(id)
@@ -90,6 +90,31 @@ export default function New() {
   async function handleRegister(e){
     e.preventDefault();
     
+    if(idCustomer){
+      await firebase.firestore().collection('chamados')
+      .doc(id)
+      .update({
+        cliente: customers[customerSelected].nomeFantasia,
+        clienteId: customers[customerSelected].id,
+        assunto: assunto,
+        status: status,
+        complemento: complemento,
+        userId: user.uid
+      })
+      .then(()=>{
+        toast.success('Chamado editado com sucesso!');
+        setCustomerSelected(0);
+        setComplemento('');
+        history.push('/dashboard');
+      })
+      .catch((err)=>{
+        toast.error('Ops erro ao registrar, tente mais tarde.')
+        console.log(err);
+      })
+
+      return;
+    }
+
     await firebase.firestore().collection('chamados')
     .add({
       created: new Date(),
