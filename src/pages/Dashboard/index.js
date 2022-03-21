@@ -41,7 +41,7 @@ export default function Dashboard() {
 
   }
 
-  async function updateState(snapshot){
+  async function updateState(snapshot) {
     const isCollectionEmpty = snapshot.size === 0;
     if(!isCollectionEmpty){
       let lista = [];
@@ -68,6 +68,15 @@ export default function Dashboard() {
       setIsEmpty(true);
     }
     setLoadingMore(false);
+  }
+
+  async function handleMore() {
+    setLoadingMore(true);
+    await listRef.startAfter(lastDocs).limit(5)
+    .get()
+    .then((snapshot)=>{
+      updateState(snapshot)
+    })
   }
 
   if(loading){
@@ -147,6 +156,10 @@ export default function Dashboard() {
                 })}
               </tbody>
             </table>
+
+            { loadingMore && <h3 style={{textAlign: 'center', marginTop: 15 }}>Buscando dados...</h3> }
+            { !loadingMore && !isEmpty && <button className="btn-more" onClick={handleMore}>Buscar mais</button> }
+
           </>
         )}  
 
